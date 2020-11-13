@@ -12,6 +12,7 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
@@ -30,8 +31,11 @@ public class MultiAggBySec {
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public static void exec(StreamExecutionEnvironment env,Long... intervals){
         FlinkKafkaConsumer<String> parsedConsumer = KafkaConnector.consumer("parsed");
+
         DataStreamSource<String> parsedStream = env.addSource(parsedConsumer);
+
         parsedStream.name("kafka_log_parsed");
+
         DataStream<Tuple2<Long, Long>> tuple2DataStream = parsedStream
             //.assignTimestampsAndWatermarks(new LogTimestampAssigner())
             .map((MapFunction<String, Tuple2<Long, Long>>)
@@ -43,7 +47,7 @@ public class MultiAggBySec {
 
         for (Long interval:intervals){
             tuple2DataStream
-                .windowAll(TumblingProcessingTimeWindows.of(Time.seconds(interval)))
+                .windowAll(TumblingEventTimeWindows.of(Time.seconds(interval)))
                 .process(new SumProcessor()).name("Processor:sum by "+interval+"sec")
                 .map(
                     tuple2->{

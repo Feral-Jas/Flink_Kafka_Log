@@ -15,10 +15,11 @@ public class MixJob {
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
         //ParseLog.exec(env);
-        MultiAggBySec.exec(env,1L,5L,10L,30L);
+        long parseLong = Long.parseLong(args[0]);
+        MultiAggBySec.exec(env,parseLong);
 
-        System.out.println(env.getExecutionPlan());
-        //env.execute("MixJob");
+        //System.out.println(env.getExecutionPlan());
+        env.execute("MixJob");
 
     }
 }
