@@ -19,8 +19,6 @@ import java.util.Properties;
  */
 public class DmCompute {
     public static void exec(StreamExecutionEnvironment env) throws Exception {
-
-
         DataStreamSource<Row> cssbase = env.createInput(
             JdbcInputFormat.buildJdbcInputFormat()
                 .setDBUrl("jdbc:dm://10.15.0.173:5236/CSSBASE")
@@ -40,7 +38,6 @@ public class DmCompute {
                 )
                 .finish()
         );
-        Properties dmProp = DmJdbc.INSTANCE.getDmProp();
         cssbase.addSink(
             JdbcSink
                 .sink(

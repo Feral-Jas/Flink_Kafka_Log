@@ -9,7 +9,9 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 public class TimerTest {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        env.addSource(new BatchSourceFunction()).print();
+
+        env.setParallelism(1)
+            .addSource(new BatchSourceFunction()).print();
 //            .map(
 //                item-> {
 //                    System.out.println(item);
@@ -17,6 +19,7 @@ public class TimerTest {
 //                }
 //            )
 //            .addSink(DmSink.sink());
+
         env.execute();
     }
 }

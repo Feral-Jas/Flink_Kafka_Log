@@ -30,7 +30,9 @@ public class AggBySec {
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public static void exec(StreamExecutionEnvironment env,Long interval){
         FlinkKafkaConsumer<String> parsedConsumer = KafkaConnector.consumer("parsed");
+
         DataStreamSource<String> parsedStream = env.addSource(parsedConsumer);
+
         parsedStream.name("kafka_log_parsed");
         DataStream<String> tupledStream = parsedStream
             .assignTimestampsAndWatermarks(new LogTimestampAssigner())
