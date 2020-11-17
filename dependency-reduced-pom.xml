@@ -82,6 +82,12 @@
       </plugin>
     </plugins>
   </build>
+  <distributionManagement>
+    <repository>
+      <id>local-nexus</id>
+      <url>http://localhost:8181/repository/maven-public/</url>
+    </repository>
+  </distributionManagement>
   <properties>
     <scala.version>2.12</scala.version>
     <job.class>ParseJob</job.class>

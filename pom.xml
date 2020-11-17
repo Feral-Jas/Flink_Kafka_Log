@@ -7,7 +7,12 @@
     <groupId>org.example</groupId>
     <artifactId>Flink_Kafka_Log</artifactId>
     <version>1.0-SNAPSHOT</version>
-
+    <distributionManagement>
+        <repository>
+            <id>local-nexus</id>
+            <url>http://10.15.0.170:8181/repository/maven-public/</url>
+        </repository>
+    </distributionManagement>
     <properties>
         <flink.version>1.11.2</flink.version>
         <scala.version>2.12</scala.version>
@@ -157,7 +162,11 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.11.2</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.css</groupId>
+            <artifactId>Dm7JdbcDriver</artifactId>
+            <version>1.16.1</version>
+        </dependency>
     </dependencies>
 
 </project>
