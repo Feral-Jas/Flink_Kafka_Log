@@ -21,11 +21,11 @@ public class BatchSourceFunction implements ParallelSourceFunction<String> {
 //        DmJdbc dmInstance = DmJdbc.INSTANCE;
 //        connection = dmInstance.getConnection();
 //        Properties dmProp = PropsHelper.getProp("dm.properties");
-//        try {
-//            Class.forName("dm.jdbc.driver.DmDriver");
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            Class.forName("dm.jdbc.driver.DmDriver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 //        String DmUrl = dmProp.getProperty("url");
 //        String username = dmProp.getProperty("username");
 //        String password = dmProp.getProperty("password");
