@@ -10,7 +10,7 @@
     <distributionManagement>
         <repository>
             <id>local-nexus</id>
-            <url>http://10.15.0.170:8181/repository/maven-public/</url>
+            <url>http://localhost:8181/repository/maven-public/</url>
         </repository>
     </distributionManagement>
     <properties>
