@@ -160,6 +160,13 @@
             <artifactId>Dm7JdbcDriver</artifactId>
             <version>1.16.1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-runtime-web -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-runtime-web_${scala.version}</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

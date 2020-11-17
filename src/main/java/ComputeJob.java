@@ -1,5 +1,6 @@
 
 import job.AggBySec;
+import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
@@ -9,7 +10,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  */
 public class ComputeJob {
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(new Configuration());
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
         AggBySec.exec(env,1L);
         env.execute("Computation & Aggregation");

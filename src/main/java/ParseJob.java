@@ -1,5 +1,6 @@
 
 import job.ParseLog;
+import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 
@@ -9,7 +10,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  */
 public class ParseJob {
     public static void main(String[] args) throws Exception {
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(new Configuration());
         ParseLog.exec(env);
         env.execute("Parse");
     }
