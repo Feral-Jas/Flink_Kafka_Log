@@ -12,7 +12,7 @@
         <flink.version>1.11.2</flink.version>
         <scala.version>2.12</scala.version>
         <scope.type>compile</scope.type>
-        <job.class>DmJob</job.class>
+        <job.class>ParseJob</job.class>
     </properties>
 
     <build>

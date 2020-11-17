@@ -2,8 +2,11 @@ package operator;
 
 import model.DmJdbc;
 import org.apache.flink.streaming.api.functions.source.ParallelSourceFunction;
+import utils.PropsHelper;
+
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.Properties;
 import java.util.concurrent.*;
 
 /**
@@ -14,9 +17,22 @@ public class BatchSourceFunction implements ParallelSourceFunction<String> {
     private static Connection connection;
     private volatile boolean isRunning = true;
     @Override
-    public void run(SourceContext<String> sourceContext){
-        DmJdbc dmInstance = DmJdbc.INSTANCE;
-        connection = dmInstance.getConnection();
+    public void run(SourceContext<String> sourceContext) throws SQLException {
+//        DmJdbc dmInstance = DmJdbc.INSTANCE;
+//        connection = dmInstance.getConnection();
+//        Properties dmProp = PropsHelper.getProp("dm.properties");
+//        try {
+//            Class.forName("dm.jdbc.driver.DmDriver");
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        String DmUrl = dmProp.getProperty("url");
+//        String username = dmProp.getProperty("username");
+//        String password = dmProp.getProperty("password");
+        Connection connection = DriverManager.getConnection(
+            "jdbc:dm://10.15.0.173:5236/CSSBASE",
+            "CSSBASE",
+            "1234567890");
         ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
         service.scheduleAtFixedRate(
             () -> {

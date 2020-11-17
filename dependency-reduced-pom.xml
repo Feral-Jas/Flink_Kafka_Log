@@ -84,7 +84,7 @@
   </build>
   <properties>
     <scala.version>2.12</scala.version>
-    <job.class>ParseJob</job.class>
+    <job.class>DmJob</job.class>
     <flink.version>1.11.2</flink.version>
     <scope.type>compile</scope.type>
   </properties>
