@@ -1,6 +1,5 @@
 package operator;
 
-import model.DmJdbc;
 import org.apache.flink.streaming.api.functions.source.ParallelSourceFunction;
 import utils.PropsHelper;
 
@@ -14,6 +13,36 @@ import java.util.concurrent.*;
  * @date 2020/11/12
  */
 public class BatchSourceFunction implements ParallelSourceFunction<String> {
+    public enum DmJdbc {
+        /**
+         * singleton connection
+         */
+        INSTANCE;
+        private Properties dmProp;
+        DmJdbc(){
+            dmProp = PropsHelper.getProp("dm.properties");
+            try {
+                Class.forName("dm.jdbc.driver.DmDriver");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        public Connection getConnection(){
+            try {
+                String dmUrl = dmProp.getProperty("url");
+                String username = dmProp.getProperty("username");
+                String password = dmProp.getProperty("password");
+                return DriverManager.getConnection(dmUrl,username,password);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        public Properties getDmProp(){
+            return dmProp;
+        }
+
+    }
     private static Connection connection;
     private volatile boolean isRunning = true;
     @Override
