@@ -9,16 +9,9 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  */
 public class DmJob {
     public static void main(String[] args) throws Exception {
-            StreamExecutionEnvironment env = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(new Configuration());
+            StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
             env.setParallelism(1)
                 .addSource(new BatchSourceFunction()).print();
-//            .map(
-//                item-> {
-//                    System.out.println(item);
-//                    return item;
-//                }
-//            )
-//            .addSink(DmSink.sink());
                 env.execute();
     }
 }
