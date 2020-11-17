@@ -12,6 +12,6 @@ public class DmJob {
             StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
             env.setParallelism(1)
                 .addSource(new BatchSourceFunction()).print();
-                env.execute();
+            env.execute("达梦数据降维-5秒级");
     }
 }

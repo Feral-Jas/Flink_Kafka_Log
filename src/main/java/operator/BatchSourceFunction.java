@@ -34,7 +34,7 @@ public class BatchSourceFunction implements ParallelSourceFunction<String> {
                 try {
                     ps = connection.prepareStatement("select * from CSSBASE_CL.S_LOG t where t.TIMESTAMP >=? and t.TIMESTAMP <=?");
                     LocalDateTime now = LocalDateTime.now();
-                    ps.setTimestamp(1,Timestamp.valueOf(now.minusSeconds(1)));
+                    ps.setTimestamp(1,Timestamp.valueOf(now.minusSeconds(5)));
                     ps.setTimestamp(2,Timestamp.valueOf(now));
                     ResultSet resultSet = ps.executeQuery();
                     while(resultSet.next()){
@@ -52,7 +52,7 @@ public class BatchSourceFunction implements ParallelSourceFunction<String> {
 
                     }
                     ps.close();
-                    Thread.sleep(2000);
+                    Thread.sleep(5000);
                 } catch (SQLException | InterruptedException e) {
                     e.printStackTrace();
                 }
