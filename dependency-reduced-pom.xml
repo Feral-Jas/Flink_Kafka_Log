@@ -85,12 +85,12 @@
   <distributionManagement>
     <repository>
       <id>local-nexus</id>
-      <url>http://10.15.0.170:8181/repository/css-maven/</url>
+      <url>http://localhost:8181/repository/css-maven/</url>
     </repository>
   </distributionManagement>
   <properties>
     <scala.version>2.12</scala.version>
-    <job.class>ParseJob</job.class>
+    <job.class>ArgsJob</job.class>
     <flink.version>1.11.2</flink.version>
     <scope.type>compile</scope.type>
   </properties>
