@@ -13,8 +13,8 @@ public class TimerTest {
     public static void main(String[] args){
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(new Configuration());
-        env.setParallelism(1)
-            .addSource(new BatchSourceFunction()).print();
+//        env.setParallelism(1)
+//            .addSource(new BatchSourceFunction()).print();
 //            .map(
 //                item-> {
 //                    System.out.println(item);

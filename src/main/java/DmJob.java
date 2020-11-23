@@ -24,7 +24,7 @@ public class DmJob {
             StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
             env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
             env.setParallelism(1)
-                .addSource(new BatchSourceFunction())
+                .addSource(new BatchSourceFunction("select * from CSSBASE_CL.S_LOG t where t.TIMESTAMP >=? and t.TIMESTAMP <=?",3))
                 .map(row->{
                     String[] splited = row.split(",");
                     return new Tuple4<>(splited[0], splited[1], splited[2], splited[3]);
