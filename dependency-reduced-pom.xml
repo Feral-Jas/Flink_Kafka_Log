@@ -90,7 +90,7 @@
   </distributionManagement>
   <properties>
     <scala.version>2.12</scala.version>
-    <job.class>ArgsJob</job.class>
+    <job.class>MixJob</job.class>
     <flink.version>1.11.2</flink.version>
     <scope.type>compile</scope.type>
   </properties>

@@ -1,11 +1,10 @@
 package model;
 
-import utils.PropsHelper;
+import constants.Const;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 
 /**
  * @author liuchenyu
@@ -26,9 +25,9 @@ public enum DmJdbc {
     public Connection getConnection(){
         try {
             return DriverManager.getConnection(
-                constants.Connection.DM_URL,
-                constants.Connection.DM_USERNAME,
-                constants.Connection.DM_PASSWORD);
+                Const.DM_URL,
+                Const.DM_USERNAME,
+                Const.DM_PASSWORD);
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -1,34 +1,64 @@
 package connector;
 
-import org.apache.flink.connector.jdbc.JdbcConnectionOptions;
-import org.apache.flink.connector.jdbc.JdbcSink;
-import org.apache.flink.streaming.api.functions.sink.SinkFunction;
+import constants.Const;
+import org.apache.flink.api.java.tuple.Tuple7;
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 /**
  * @author liuchenyu
  * @date 2020/11/13
  */
-public class DmSink {
-    public static SinkFunction<String> sink(){
-        return JdbcSink
-            .sink(
-                "INSERT INTO CSSBASE_CL.S_LOG VALUES (?,?,?,?)",
-                (ps, row) -> {
-                    ps.setString(1, String.valueOf(UUID.randomUUID()));
-                    ps.setString(2,"login.action");
-                    ps.setString(3,"系统管理员");
-                    ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
-                },
-                new JdbcConnectionOptions.JdbcConnectionOptionsBuilder()
-                    .withUrl("jdbc:dm://10.15.0.173:5236/CSSBASE")
-                    .withDriverName("dm.jdbc.driver.DmDriver")
-                    .withUsername("CSSBASE")
-                    .withPassword("1234567890")
-                    .build()
-            );
+public class DmSink extends RichSinkFunction<Tuple7<String,LocalDateTime,Long,Long,Integer,Integer,Integer>> {
+    private static final long serialVersionUID = 1L;
+    private Connection connection;
+    private PreparedStatement preparedStatement;
+    private String sql;
+    public DmSink(String sql){
+        this.sql = sql;
     }
+    @Override
+    public void open(Configuration parameters) throws Exception {
+        try {
+            Class.forName("dm.jdbc.driver.DmDriver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        connection = DriverManager.getConnection(
+            Const.DM_URL,
+            Const.DM_USERNAME,
+            Const.DM_PASSWORD);
+        preparedStatement = connection.prepareStatement(sql);
+        super.open(parameters);
+    }
+
+    @Override
+    public void invoke(Tuple7<String, LocalDateTime, Long, Long, Integer, Integer, Integer> value, Context context) throws Exception {
+        preparedStatement.setString(1, value.f0);
+        preparedStatement.setTimestamp(2, Timestamp.valueOf(value.f1));
+        preparedStatement.setDouble(3, value.f2);
+        preparedStatement.setDouble(4, value.f3);
+        preparedStatement.setInt(5, value.f4);
+        preparedStatement.setInt(6, value.f5);
+        preparedStatement.setInt(7, value.f6);
+        preparedStatement.executeUpdate();
+    }
+
+    @Override
+    public void close() throws Exception {
+        if(preparedStatement != null){
+            preparedStatement.close();
+        }
+        if(connection != null){
+            connection.close();
+        }
+        super.close();
+    }
+
 }

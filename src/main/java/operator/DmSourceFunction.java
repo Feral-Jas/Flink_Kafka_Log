@@ -1,7 +1,9 @@
 package operator;
 
 import model.DmJdbc;
+import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.source.ParallelSourceFunction;
+import org.apache.flink.streaming.api.functions.source.RichParallelSourceFunction;
 import utils.PropsHelper;
 
 import java.sql.*;
@@ -13,14 +15,21 @@ import java.util.concurrent.*;
  * @author liuchenyu
  * @date 2020/11/12
  */
-public class BatchSourceFunction implements ParallelSourceFunction<String> {
+public class DmSourceFunction extends RichParallelSourceFunction<String> {
     private volatile boolean isRunning = true;
     private String sql;
     private int interval;
-    public BatchSourceFunction(String sql,int interval){
+    public DmSourceFunction(String sql, int interval){
         this.sql=sql;
         this.interval=interval;
     }
+
+    @Override
+    public void open(Configuration parameters) throws Exception {
+        DmJdbc dmJdbc =  DmJdbc.INSTANCE;
+        Connection connection = dmJdbc.getConnection();
+    }
+
     @Override
     public void run(SourceContext<String> sourceContext) throws SQLException {
         if(isRunning){
@@ -33,7 +42,7 @@ public class BatchSourceFunction implements ParallelSourceFunction<String> {
                 "jdbc:dm://10.15.0.173:5236/CSSBASE",
                 "CSSBASE",
                 "1234567890");
-            while (true){
+            while (isRunning){
                 synchronized (sourceContext.getCheckpointLock()){
                     System.out.println("begin sql...");
                     PreparedStatement ps = null;
@@ -61,9 +70,10 @@ public class BatchSourceFunction implements ParallelSourceFunction<String> {
                         Thread.sleep(5000);
                     } catch (SQLException | InterruptedException e) {
                         e.printStackTrace();
+                    }finally {
+                        connection.close();
                     }
                 }
-
             }
     //        ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
     //        service.scheduleAtFixedRate(
@@ -108,5 +118,8 @@ public class BatchSourceFunction implements ParallelSourceFunction<String> {
         isRunning = false;
     }
 
+    @Override
+    public void close(){
 
+    }
 }
