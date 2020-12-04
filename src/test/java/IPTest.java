@@ -1,3 +1,7 @@
+import org.apache.flink.api.java.tuple.Tuple;
+import org.apache.flink.api.java.tuple.Tuple10;
+import org.apache.flink.api.java.tuple.Tuple3;
+
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -10,7 +14,7 @@ import java.util.regex.Pattern;
  * @date 2020/11/30
  */
 public class IPTest {
-    public String getIp() throws SocketException {
+    public static String getIp() throws SocketException {
         Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
         Pattern pattern = Pattern.compile("/\\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\\b");
         while (networkInterfaces.hasMoreElements()) {
@@ -18,8 +22,7 @@ public class IPTest {
             for (InterfaceAddress item : networkInterface.getInterfaceAddresses()) {
                     String address = item.getAddress().toString();
                     Matcher matcher = pattern.matcher(address);
-                    boolean res = matcher.find();
-                    if (res == true && !("/127.0.0.1".equals(address))) {
+                    if (matcher.find() && !("/127.0.0.1".equals(address))) {
                         return address.substring(1);
                     }
             }
@@ -28,6 +31,7 @@ public class IPTest {
     }
 
     public static void main(String[] args) throws SocketException {
-        System.out.println(new IPTest().getIp());
+        System.out.println(IPTest.getIp());
     }
+
 }

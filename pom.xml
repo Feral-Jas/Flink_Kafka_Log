@@ -16,12 +16,13 @@
     <properties>
         <flink.version>1.11.2</flink.version>
         <scala.version>2.12</scala.version>
-        <scope.type>compile</scope.type>
-        <job.class>MixJob</job.class>
+        <scope.type>provided</scope.type>
+        <job.class>FlinkSqlWithArgs</job.class>
+        <final.name>FlinkSqlWithArgs</final.name>
     </properties>
 
     <build>
-        <finalName>${job.class}</finalName>
+        <finalName>${final.name}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -123,7 +124,6 @@
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-kafka_${scala.version}</artifactId>
             <version>${flink.version}</version>
-            <scope>${scope.type}</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-clients -->
         <dependency>
@@ -136,17 +136,19 @@
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-api-java-bridge_${scala.version}</artifactId>
             <version>${flink.version}</version>
+            <scope>${scope.type}</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-json</artifactId>
             <version>${flink.version}</version>
+            <scope>${scope.type}</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-planner-blink_${scala.version}</artifactId>
             <version>${flink.version}</version>
-
+            <scope>${scope.type}</scope>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -200,12 +202,6 @@
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
             <version>3.12.7</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.elasticsearch.client/elasticsearch-rest-high-level-client -->
-        <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>elasticsearch-rest-high-level-client</artifactId>
-            <version>6.5.4</version>
         </dependency>
     </dependencies>
 

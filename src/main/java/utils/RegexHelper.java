@@ -1,7 +1,11 @@
 package utils;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import model.EsbMonitor;
+
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,5 +53,12 @@ public class RegexHelper {
             }
         }
         return esbMonitor;
+    }
+    public static Map mapRegex(String message){
+        Pattern pattern = Pattern.compile(TIMESTAMP_RGX +" "+ THREAD_RGX +" "+ LEVEL_RGX +" "+CLASS_RGX+" "+LINE_RGX+" - "+TEXT_RGX);
+        Matcher matcher = pattern.matcher(message);
+        matcher.find();
+        Gson gson = new GsonBuilder().create();
+        return gson.fromJson(matcher.group("text"),Map.class);
     }
 }
