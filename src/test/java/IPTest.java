@@ -14,15 +14,22 @@ import java.util.regex.Pattern;
  * @date 2020/11/30
  */
 public class IPTest {
-    public static String getIp() throws SocketException {
-        Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-        Pattern pattern = Pattern.compile("/\\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\\b");
+    public static String getIp()  {
+        Enumeration<NetworkInterface> networkInterfaces = null;
+        try {
+            networkInterfaces = NetworkInterface.getNetworkInterfaces();
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        Pattern pattern = Pattern.compile(
+            "/\\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\\b"
+        );
         while (networkInterfaces.hasMoreElements()) {
             NetworkInterface networkInterface = networkInterfaces.nextElement();
             for (InterfaceAddress item : networkInterface.getInterfaceAddresses()) {
                     String address = item.getAddress().toString();
                     Matcher matcher = pattern.matcher(address);
-                    if (matcher.find() && !("/127.0.0.1".equals(address))) {
+                    if (matcher.find() && item.getAddress().isSiteLocalAddress()) {
                         return address.substring(1);
                     }
             }

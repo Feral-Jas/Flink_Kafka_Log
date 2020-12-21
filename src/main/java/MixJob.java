@@ -36,7 +36,7 @@ public class MixJob {
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
-        FlinkKafkaConsumer<Map> consumer = KafkaConnector.mapConsumer("gateway_filebeat");
+        FlinkKafkaConsumer<Map> consumer = KafkaConnector.mapConsumer("blockchain_filebeat");
         consumer.assignTimestampsAndWatermarks(
             WatermarkStrategy.forMonotonousTimestamps());
         SingleOutputStreamOperator<EsbMonitor> modeled = env.setParallelism(1)
@@ -50,7 +50,7 @@ public class MixJob {
             hit-> hit.gatewayCode)
             .windowAll(TumblingEventTimeWindows.of(Time.seconds(Integer.parseInt(args[0]))))
             .process(new GatewayTypeProcessor())
-            .addSink(new DmSink1("insert into CSSBASE_FLINK.GATEWAYTYPE_SECOND_"+args[0]+" values(?,?,?,?,?,?,?)"));
+            .addSink(new DmSink1("insert into BLOCKCHAIN.GATEWAYTYPE_SECOND_"+args[0]+" values(?,?,?,?,?,?,?)"));
         DataStream<Tuple7<String, LocalDateTime, Long, Long, Integer, Integer, Integer>> broadcast =
             modeled
                 .map((MapFunction<EsbMonitor, Tuple3<Long, Long, String>>)
@@ -67,21 +67,21 @@ public class MixJob {
                 .process(new CountProcessor())
                 .broadcast();
         broadcast.map(Tuple7::toString).addSink(KafkaConnector.producer("gateway_sec"));
-        broadcast.map(
-            item->{
-                Map<String,Object> res = new HashMap<>(7);
-                res.put("uuid",item.f0);
-                res.put("timestamp",item.f1.toString());
-                res.put("data_size_in",item.f2);
-                res.put("data_size_out",item.f3);
-                res.put("count_success",item.f4);
-                res.put("count_failure",item.f5);
-                res.put("count_all",item.f6);
-                Gson gson = new GsonBuilder().create();
-                return gson.toJson(res);
-            }
-        ).addSink(ElasticSink.builder0("gateway_second_"+args[0]));
-        broadcast.addSink(new DmSink("insert into CSSBASE_FLINK.GATEWAY_SECOND_"+args[0]+" values(?,?,?,?,?,?,?)"));
+//        broadcast.map(
+//            item->{
+//                Map<String,Object> res = new HashMap<>(7);
+//                res.put("uuid",item.f0);
+//                res.put("timestamp",item.f1.toString());
+//                res.put("data_size_in",item.f2);
+//                res.put("data_size_out",item.f3);
+//                res.put("count_success",item.f4);
+//                res.put("count_failure",item.f5);
+//                res.put("count_all",item.f6);
+//                Gson gson = new GsonBuilder().create();
+//                return gson.toJson(res);
+//            }
+//        ).addSink(ElasticSink.builder0("gateway_second_"+args[0]));
+        broadcast.addSink(new DmSink("insert into BLOCKCHAIN.GATEWAY_SECOND_"+args[0]+" values(?,?,?,?,?,?,?)"));
         //System.out.println(env.getExecutionPlan());
          env.execute();
     }

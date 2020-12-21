@@ -33,9 +33,9 @@ public class FlinkSqlWithArgs {
         Document matchJob = sqljobs.find(new Document("_id", new ObjectId(args[0]))).first();
         assert matchJob != null;
 
-        System.out.println(matchJob.getString("source"));
-        System.out.println(matchJob.getString("sink"));
-        System.out.println(matchJob.getString("sql"));
+//        System.out.println(matchJob.getString("source"));
+//        System.out.println(matchJob.getString("sink"));
+//        System.out.println(matchJob.getString("sql"));
 
 
 

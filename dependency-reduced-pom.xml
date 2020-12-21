@@ -235,9 +235,9 @@
     </repository>
   </distributionManagement>
   <properties>
-    <final.name>FlinkSqlWithArgs</final.name>
+    <final.name>FlinkSql</final.name>
     <scala.version>2.12</scala.version>
-    <job.class>FlinkSqlWithArgs</job.class>
+    <job.class>FlinkSql</job.class>
     <flink.version>1.11.2</flink.version>
     <scope.type>provided</scope.type>
   </properties>

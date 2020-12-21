@@ -17,8 +17,8 @@
         <flink.version>1.11.2</flink.version>
         <scala.version>2.12</scala.version>
         <scope.type>provided</scope.type>
-        <job.class>FlinkSqlWithArgs</job.class>
-        <final.name>FlinkSqlWithArgs</final.name>
+        <job.class>FlinkSql</job.class>
+        <final.name>FlinkSql</final.name>
     </properties>
 
     <build>
