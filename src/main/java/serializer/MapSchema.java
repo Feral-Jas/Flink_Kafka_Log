@@ -24,7 +24,7 @@ public class MapSchema implements KafkaDeserializationSchema<Map> {
     }
 
     @Override
-    public Map<String,Object> deserialize(ConsumerRecord<byte[], byte[]> consumerRecord) throws Exception {
+    public Map deserialize(ConsumerRecord<byte[], byte[]> consumerRecord) throws Exception {
         return gson.fromJson(new String(consumerRecord.value()),Map.class);
     }
 

@@ -31,7 +31,7 @@ public class ElasticSink {
                 public IndexRequest createIndexRequest(String element) {
                     return Requests.indexRequest()
                         .index(indexName+"_"+LocalDate.now().toString())
-                        .type("log")
+                        .type("test")
                         .source(element, XContentType.JSON);
                 }
                 @Override

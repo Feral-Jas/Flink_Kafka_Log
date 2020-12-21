@@ -1,22 +1,16 @@
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
 import connector.DmSink;
-import jdk.nashorn.internal.ir.ObjectNode;
-import job.MultiAggBySec;
-import job.ParseLog;
-import model.DmJdbc;
-import operator.BatchSourceFunction;
+import operator.DmSourceFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author liuchenyu
@@ -45,13 +39,13 @@ public class ArgsJob {
                 switch (graph.getString("category")){
 
                     case "Start":
-                        ds = env.setParallelism(1).addSource(new BatchSourceFunction("select * from CSSBASE_CL.S_LOG t where t.TIMESTAMP >=? and t.TIMESTAMP <=?",2));
+                        ds = env.setParallelism(1).addSource(new DmSourceFunction("select * from CSSBASE_CL.S_LOG t where t.TIMESTAMP >=? and t.TIMESTAMP <=?",2));
                         break;
                     case "Operator":
 
                         break;
                     case "End":
-                        ds.addSink(DmSink.sink());
+                        //ds.addSink(DmSink.sink());
                         break;
                     default:break;
                 }

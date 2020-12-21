@@ -14,13 +14,14 @@ import java.time.LocalDateTime;
 /**
  * @author liuchenyu
  * @date 2020/11/13
+ * sdept,spost,role,suser,cert : type count
  */
-public class DmSink extends RichSinkFunction<Tuple7<String,LocalDateTime,Long,Long,Integer,Integer,Integer>> {
+public class DmSink1 extends RichSinkFunction<Tuple7<String,LocalDateTime,Integer,Integer,Integer,Integer,Integer>> {
     private static final long serialVersionUID = 1L;
     private Connection connection;
     private PreparedStatement preparedStatement;
     private String sql;
-    public DmSink(String sql){
+    public DmSink1(String sql){
         this.sql = sql;
     }
     @Override
@@ -39,11 +40,11 @@ public class DmSink extends RichSinkFunction<Tuple7<String,LocalDateTime,Long,Lo
     }
 
     @Override
-    public void invoke(Tuple7<String, LocalDateTime, Long, Long, Integer, Integer, Integer> value, Context context) throws Exception {
+    public void invoke(Tuple7<String, LocalDateTime, Integer, Integer, Integer, Integer, Integer> value, Context context) throws Exception {
         preparedStatement.setString(1, value.f0);
         preparedStatement.setTimestamp(2, Timestamp.valueOf(value.f1));
-        preparedStatement.setDouble(3, value.f2);
-        preparedStatement.setDouble(4, value.f3);
+        preparedStatement.setInt(3, value.f2);
+        preparedStatement.setInt(4, value.f3);
         preparedStatement.setInt(5, value.f4);
         preparedStatement.setInt(6, value.f5);
         preparedStatement.setInt(7, value.f6);

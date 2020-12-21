@@ -19,7 +19,10 @@ import utils.RegexHelper;
  */
 public class ParseLog {
     public static void exec(StreamExecutionEnvironment env){
+
         FlinkKafkaConsumer<String> logComsumer = KafkaConnector.consumer("log");
+
+
         DataStreamSource<String> logSourceStream = env.addSource(logComsumer);
         logSourceStream.name("kafka_log_origin");
 
